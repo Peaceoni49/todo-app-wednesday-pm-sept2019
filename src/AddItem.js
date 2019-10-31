@@ -1,10 +1,12 @@
 import React from "react";
+import moment from "moment";
 
 // Controlled Component
 
 class AddItem extends React.Component {
   state = {
-    newItemText: ""
+    newItemText: "",
+    dateSelected: moment().format("YYYY-MM-DD")
   };
 
   // Function which update state must always live where the state lives
@@ -14,13 +16,20 @@ class AddItem extends React.Component {
     });
   };
 
-  handleClick = event => {
-    event.preventDefault();
-    this.props.addNewTaskFunc(this.state.newItemText);
+  handleClick = e => {
+    e.preventDefault();
+    this.props.addNewTaskFunc(this.state.newItemText, this.state.dateSelected);
     this.setState({
       newItemText: ""
     });
   };
+
+  handleDateChange = e => {
+    console.log(e.target.value);
+    this.setState({
+      dateSelected: e.target.value
+    });
+  }
 
   render() {
     // JSX
@@ -36,7 +45,10 @@ class AddItem extends React.Component {
             onChange={this.updateNewItemText}
           ></input>
         </div>
-        {/* this is a comment in JSX */}
+
+        <div className="form-group mx-sm-3 mb-2">
+          <input type="date" onChange={this.handleDateChange} value={this.state.dateSelected} />
+        </div>
         <button className="btn btn-primary mb-2" onClick={this.handleClick} disabled={this.state.newItemText.length === 0}>
           Add to List
         </button>
